@@ -1,4 +1,4 @@
-package deploy_service
+package main
 
 import (
 	"context"
