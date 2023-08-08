@@ -1,7 +1,8 @@
-package api
+package deploy_service
 
 import (
 	"context"
+	"demo/k8s-client-go/biz/service/client_set_service"
 	"flag"
 	"fmt"
 	v1 "k8s.io/api/apps/v1"
@@ -43,7 +44,7 @@ func UpdateDeployment() {
 		fmt.Println("The application container not exist in the deployment pods.")
 		os.Exit(0)
 	}
-	_, err := clientSet.AppsV1().Deployments("default").Update(context.TODO(), deployment, metaV1.UpdateOptions{})
+	_, err := client_set_service.ClientSet.AppsV1().Deployments("default").Update(context.TODO(), deployment, metaV1.UpdateOptions{})
 	if err != nil {
 		panic(err.Error())
 	}
@@ -60,7 +61,7 @@ func GetDeployment(deploymentName, imageName *string) *v1.Deployment {
 		fmt.Println("you must specify the new image name.")
 		os.Exit(0)
 	}
-	clientSet := GetClientSet()
+	clientSet := client_set_service.GetInstance()
 	deployment, err := clientSet.AppsV1().Deployments("default").Get(context.TODO(), *deploymentName, metaV1.GetOptions{})
 	HandleErr(err)
 	fmt.Println("Found deployment")

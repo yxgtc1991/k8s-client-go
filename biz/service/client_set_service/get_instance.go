@@ -1,4 +1,4 @@
-package api
+package client_set_service
 
 import (
 	"flag"
@@ -10,20 +10,20 @@ import (
 	"sync"
 )
 
-var clientSet *kubernetes.Clientset
+var ClientSet *kubernetes.Clientset
 var once sync.Once
 
-// GetClientSet 单例模式：获取clientSet
-func GetClientSet() *kubernetes.Clientset {
+// GetInstance 单例模式：获取clientSet
+func GetInstance() *kubernetes.Clientset {
 	var err error
 	config := GetConf()
 	once.Do(func() {
-		clientSet, err = kubernetes.NewForConfig(config)
+		ClientSet, err = kubernetes.NewForConfig(config)
 		if err != nil {
 			panic(err.Error())
 		}
 	})
-	return clientSet
+	return ClientSet
 }
 
 // GetConf 加载配置文件
